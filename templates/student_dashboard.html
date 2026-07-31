@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Complaints</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="app">
+
+<header class="site-nav" role="banner">
+    <div class="site-nav-inner">
+        <div class="site-brand" aria-label="System">
+            <div class="site-brand-title">Student Grievance Redressal System</div>
+            <div class="site-brand-sub">Student</div>
+        </div>
+        <div class="site-actions">
+            <a href="/add" class="btn btn--primary btn--glow">+ Submit Complaint</a>
+            <a href="/logout" class="btn btn--ghost">Logout</a>
+        </div>
+    </div>
+</header>
+
+<main class="container" role="main">
+    <section class="panel" aria-label="My complaints">
+        <div class="panel-header">
+            <div class="panel-title">My Complaints</div>
+            <p class="panel-hint">Only your complaints are shown here.</p>
+        </div>
+
+        {% if not data or data|length == 0 %}
+            <div class="empty" style="padding: 22px; text-align:center;">
+                <div class="help" style="font-weight: 900; font-size: 16px;">No complaints yet</div>
+                <div class="help" style="margin-top: 6px;">Click below to submit your first complaint</div>
+                <div style="margin-top: 14px; display:flex; justify-content:center;">
+                    <a href="/add" class="btn btn--primary btn--glow">Submit Complaint</a>
+                </div>
+            </div>
+        {% else %}
+            <div class="cards-grid cards-grid--single" aria-label="My complaints cards">
+                {% for c in data %}
+                    <article class="complaint-card {{ 'is-resolved' if c.status == 'Resolved' else '' }}" aria-label="Complaint {{ c.id }}">
+                        <div class="complaint-top">
+                            <div class="complaint-id">#{{ c.id }}</div>
+                            <span class="status-pill {{ c.status|replace(' ', '-') }}">{{ c.status }}</span>
+                        </div>
+
+                        <div class="complaint-text">{{ c.complaint_text }}</div>
+
+                        <div class="complaint-meta" aria-label="Complaint categories">
+                            <span class="role-pill">Main: {{ c.main_category or '—' }}</span>
+                            <span class="role-pill">Sub: {{ c.sub_category or '—' }}</span>
+                        </div>
+
+                        {% if c.response_message and c.response_message|trim %}
+                            {% if c.status != 'Resolved' %}
+                                <div class="response-card" aria-label="Latest update">
+                                    <div class="response-card-title">Update message</div>
+                                    <div class="response-card-text">{{ c.response_message }}</div>
+                                </div>
+                            {% else %}
+                                <div class="response-card" aria-label="Final update">
+                                    <div class="response-card-title">Final update</div>
+                                    <div class="response-card-text">{{ c.response_message }}</div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </article>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </section>
+</main>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+
+</body>
+</html>

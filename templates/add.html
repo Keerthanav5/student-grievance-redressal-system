@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Add Complaint</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="app">
+
+<header class="site-nav" role="banner">
+    <div class="site-nav-inner">
+        <div class="site-brand" aria-label="System">
+            <div class="site-brand-title">Student Grievance Redressal System</div>
+            <div class="site-brand-sub">Student</div>
+        </div>
+        <div class="site-actions">
+            <a href="/my_complaints" class="btn btn--ghost" data-no-transition="true">My Complaints</a>
+            <a href="/logout" class="btn btn--ghost">Logout</a>
+        </div>
+    </div>
+</header>
+
+<main class="container" role="main">
+    <section class="panel panel--narrow" aria-label="New complaint form">
+        <div class="panel-header">
+            <h1 class="panel-title" style="display:flex; align-items:center; gap:10px;">
+                <svg class="icon icon--lg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M7 3h10a2 2 0 0 1 2 2v16l-3-2-3 2-3-2-3 2V5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    <path d="M9 8h6M9 12h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+                New complaint
+            </h1>
+            <p class="panel-hint">Fields marked required must be filled.</p>
+        </div>
+
+        <form method="POST" class="form stagger" novalidate>
+            <div class="field" style="--i:0">
+                <label class="label" for="name">Your name <span class="req" aria-hidden="true">*</span></label>
+                <input id="name" type="text" name="name" placeholder="e.g., Ayesha Khan" autocomplete="name" required />
+                <div class="help">This will be shown with the complaint.</div>
+            </div>
+
+            <div class="field" style="--i:1">
+                <label class="label" for="mainCategory">Main Category <span class="req" aria-hidden="true">*</span></label>
+                <select id="mainCategory" name="main_category" required>
+                    <option value="" selected disabled>Select main category</option>
+                    {% for category in main_categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                    {% endfor %}
+                </select>
+                <div class="help">Choose the broad area that matches your complaint.</div>
+            </div>
+
+            <div class="field" style="--i:2">
+                <label class="label" for="subCategory">Sub-Category <span class="req" aria-hidden="true">*</span></label>
+                <select id="subCategory" name="sub_category" required disabled>
+                    <option value="" selected disabled>Select sub-category</option>
+                </select>
+                <div class="help">Options will update based on main category.</div>
+            </div>
+
+            <div class="field" style="--i:3">
+                <label class="label" for="issue">Issue details <span class="req" aria-hidden="true">*</span></label>
+                <textarea id="issue" name="issue" placeholder="Describe the issue in one or two sentences...!!" required maxlength="500"></textarea>
+                <div class="meta">[]
+                    <span class="help">Tip: include what happened and where.</span>
+                    <span class="counter" aria-live="polite"><span id="issueCount">0</span>/500</span>
+                </div>
+            </div>
+
+            <div class="form-actions" style="--i:4">
+                <button type="submit" class="btn btn--primary" id="submitBtn">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M22 2l-7 20-4-9-9-4 20-7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    </svg>
+                    Submit complaint
+                </button>
+                <a href="/my_complaints" class="btn btn--ghost" data-no-transition="true">Cancel</a>
+            </div>
+        </form>
+    </section>
+</main>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div id="flash-message" data-flash="{{ messages[0] | e }}" hidden></div>
+    {% endif %}
+{% endwith %}
+
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true">
+    <div class="toast-title">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Complaint submitted
+    </div>
+    <div class="toast-text" id="toastText"></div>
+</div>
+
+<script>
+    (function () {
+        var flashEl = document.getElementById('flash-message');
+        var toast = document.getElementById('toast');
+        var toastText = document.getElementById('toastText');
+        if (flashEl && flashEl.dataset && flashEl.dataset.flash && toast && toastText) {
+            toastText.textContent = flashEl.dataset.flash;
+            toast.classList.add('is-visible');
+            window.setTimeout(function () {
+                toast.classList.add('is-hiding');
+            }, 3200);
+            window.setTimeout(function () {
+                toast.classList.remove('is-visible');
+                toast.classList.remove('is-hiding');
+            }, 3500);
+        }
+
+        var issue = document.getElementById('issue');
+        var count = document.getElementById('issueCount');
+        var submit = document.getElementById('submitBtn');
+        var mainCategory = document.getElementById('mainCategory');
+        var subCategory = document.getElementById('subCategory');
+        var subcategoryMap = {{ subcategory_map | tojson }};
+
+        function rebuildSubcategories(selected) {
+            var options = subcategoryMap[selected] || [];
+            subCategory.innerHTML = '';
+            var placeholder = document.createElement('option');
+            placeholder.value = '';
+            placeholder.textContent = 'Select sub-category';
+            placeholder.disabled = true;
+            placeholder.selected = true;
+            subCategory.appendChild(placeholder);
+
+            options.forEach(function (label) {
+                var opt = document.createElement('option');
+                opt.value = label;
+                opt.textContent = label;
+                subCategory.appendChild(opt);
+            });
+
+            subCategory.disabled = options.length === 0;
+        }
+
+        function sync() {
+            var value = issue.value || '';
+            count.textContent = String(value.length);
+            var hasName = (document.getElementById('name').value || '').trim().length > 0;
+            var hasIssue = value.trim().length > 0;
+            var hasMain = (mainCategory.value || '').trim().length > 0;
+            var hasSub = (subCategory.value || '').trim().length > 0;
+            submit.disabled = !(hasName && hasIssue && hasMain && hasSub);
+        }
+
+        sync();
+        issue.addEventListener('input', sync);
+        document.getElementById('name').addEventListener('input', sync);
+        mainCategory.addEventListener('change', function () {
+            rebuildSubcategories(mainCategory.value);
+            sync();
+        });
+        subCategory.addEventListener('change', sync);
+    })();
+</script>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+CREATE DATABASE cms_db;
+
+USE cms_db;
+
+CREATE TABLE complaints (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_register_number VARCHAR(12) NOT NULL,
+    student_name VARCHAR(100) NOT NULL,
+    complaint_text TEXT NOT NULL,
+    complaint_type VARCHAR(80) NOT NULL,
+    assigned_to VARCHAR(20) NOT NULL DEFAULT 'admin',
+    status VARCHAR(20) NOT NULL DEFAULT 'Pending',
+    response_message TEXT
+);

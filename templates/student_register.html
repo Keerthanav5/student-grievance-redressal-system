@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ page_title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth">
+
+<header class="site-nav" role="banner">
+    <div class="site-nav-inner">
+        <div class="site-brand" aria-label="System">
+            <div class="site-brand-title">Student Grievance Redressal System</div>
+            <div class="site-brand-sub">RPA FIRST GRADE COLLEGE</div>
+        </div>
+        <div class="site-actions"></div>
+    </div>
+</header>
+
+<main class="container container--auth" role="main">
+    <section class="glass auth-card" aria-label="Student registration">
+        <div class="glass-header">
+            <div class="panel-title" style="display:flex; align-items:center; gap:10px;">
+                <a class="btn btn--ghost" href="/student_login" data-no-transition="true" aria-label="Back">←</a>
+                <span class="brand-mark" aria-hidden="true" style="width:34px; height:34px; border-radius:12px;">🧑‍🎓</span>
+                {{ page_title }}
+            </div>
+            <div class="panel-hint">Create your student account to submit complaints</div>
+        </div>
+
+        <div class="glass-body">
+            {% if error %}
+                <div class="help" style="color: var(--danger); font-weight: 800; margin-bottom: 12px;">{{ error }}</div>
+            {% endif %}
+            {% if success %}
+                <div class="help" style="color: var(--success); font-weight: 900; margin-bottom: 12px;">{{ success }}</div>
+            {% endif %}
+
+            <form method="POST" novalidate class="stagger">
+                <div class="field" style="--i:0">
+                    <label class="label" for="register_number">Register number <span class="req" aria-hidden="true">*</span></label>
+                    <input id="register_number" type="text" name="register_number" placeholder="e.g., U03JA23S0021" autocomplete="username" required minlength="12" maxlength="12" pattern="[A-Za-z0-9]{12}" inputmode="text" aria-describedby="registerHelp registerError" />
+                    <div class="help" id="registerHelp">Format: 12 characters (letters + numbers). Example: U03JA23S0021</div>
+                    <div class="help" id="registerError" style="color: var(--danger); font-weight: 800; display:none;">Register number must be exactly 12 characters</div>
+                </div>
+
+                <div class="field" style="--i:1">
+                    <label class="label" for="student_name">Name <span class="req" aria-hidden="true">*</span></label>
+                    <input id="student_name" type="text" name="student_name" placeholder="e.g., Ayesha Khan" autocomplete="name" required />
+                </div>
+
+                <div class="form-actions" style="--i:2">
+                    <button type="submit" class="btn btn--primary btn--glow">Next</button>
+                    <a class="btn btn--ghost" href="/student_login" data-no-transition="true">Login</a>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+
+<script>
+    (function () {
+        var input = document.getElementById('register_number');
+        var err = document.getElementById('registerError');
+        if (!input || !err) return;
+
+        function isValid(v) {
+            return /^[A-Z0-9]{12}$/.test(v);
+        }
+
+        function sync() {
+            var v = (input.value || '').toUpperCase();
+            if (input.value !== v) input.value = v;
+
+            var show = v.length > 0 && !isValid(v);
+            err.style.display = show ? 'block' : 'none';
+            input.setCustomValidity(show ? 'Register number must be exactly 12 characters' : '');
+        }
+
+        sync();
+        input.addEventListener('input', sync);
+        input.addEventListener('blur', sync);
+    })();
+</script>
+
+</body>
+</html>

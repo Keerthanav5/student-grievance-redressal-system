@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ page_title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth">
+
+<header class="site-nav" role="banner">
+    <div class="site-nav-inner">
+        <div class="site-brand" aria-label="System">
+            <div class="site-brand-title">Student Grievance Redressal System</div>
+            <div class="site-brand-sub">RPA FIRST GRADE COLLEGE</div>
+        </div>
+        <div class="site-actions"></div>
+    </div>
+</header>
+
+<main class="container container--auth" role="main">
+    <section class="glass auth-card" aria-label="Login">
+        <div class="glass-header">
+            <div class="panel-title" style="display:flex; align-items:center; gap:10px;">
+                <a class="btn btn--ghost" href="/" data-no-transition="true" aria-label="Back">←</a>
+                <span class="brand-mark" aria-hidden="true" style="width:34px; height:34px; border-radius:12px;">🔐</span>
+                {{ page_title }}
+            </div>
+            <div class="panel-hint">Enter your credentials to continue</div>
+        </div>
+
+        <div class="glass-body">
+            {% if error %}
+                <div class="help" style="color: var(--danger); font-weight: 800; margin-bottom: 12px;">{{ error }}</div>
+            {% endif %}
+            {% if success %}
+                <div class="help" style="color: var(--success); font-weight: 900; margin-bottom: 12px;">{{ success }}</div>
+            {% endif %}
+
+            <form method="POST" novalidate class="stagger">
+                {% if login_role == 'student' %}
+                    <div class="field" style="--i:0">
+                        <label class="label" for="register_number">Register number <span class="req" aria-hidden="true">*</span></label>
+                        <input id="register_number" type="text" name="register_number" placeholder="e.g., U03JA23S0021" autocomplete="username" required minlength="12" maxlength="12" pattern="[A-Za-z0-9]{12}" inputmode="text" aria-describedby="registerHelp registerError" />
+                        <div class="help" id="registerHelp">Format: 12 characters (letters + numbers). Example: U03JA23S0021</div>
+                        <div class="help" id="registerError" style="color: var(--danger); font-weight: 800; display:none;">Register number must be exactly 12 characters</div>
+                    </div>
+
+                    <div class="field" style="--i:1">
+                        <label class="label" for="student_password">Password <span class="req" aria-hidden="true">*</span></label>
+                        <div class="input-wrap">
+                            <input id="student_password" type="password" name="password" placeholder="Enter password" autocomplete="current-password" required />
+                            <button type="button" class="toggle-pass" aria-label="Show password" aria-pressed="false" data-toggle-password data-target="#student_password">
+                                <svg class="icon eye" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                                <svg class="icon eye-off" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M3 3l18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M10.6 10.6A2.5 2.5 0 0 0 12 15.5a2.5 2.5 0 0 0 1.4-.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M6.3 6.7C3.6 8.7 2 12 2 12s3.5 7 10 7c2.1 0 3.9-.6 5.3-1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M9.3 4.8A10.6 10.6 0 0 1 12 5c6.5 0 10 7 10 7a16.6 16.6 0 0 1-3.6 4.9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="help" style="margin-top: 4px;">
+                        New student? <a href="/student_register" class="btn btn--ghost" style="padding: 6px 10px;">Register</a>
+                    </div>
+                {% else %}
+                    <div class="field" style="--i:0">
+                        <label class="label" for="username">Username <span class="req" aria-hidden="true">*</span></label>
+                        <input id="username" type="text" name="username" placeholder="Enter username" autocomplete="username" required />
+                    </div>
+
+                    <div class="field" style="--i:1">
+                        <label class="label" for="password">Password <span class="req" aria-hidden="true">*</span></label>
+                        <div class="input-wrap">
+                            <input id="password" type="password" name="password" placeholder="Enter password" autocomplete="current-password" required />
+                            <button type="button" class="toggle-pass" aria-label="Show password" aria-pressed="false" data-toggle-password data-target="#password">
+                                <svg class="icon eye" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                                <svg class="icon eye-off" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M3 3l18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M10.6 10.6A2.5 2.5 0 0 0 12 15.5a2.5 2.5 0 0 0 1.4-.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M6.3 6.7C3.6 8.7 2 12 2 12s3.5 7 10 7c2.1 0 3.9-.6 5.3-1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M9.3 4.8A10.6 10.6 0 0 1 12 5c6.5 0 10 7 10 7a16.6 16.6 0 0 1-3.6 4.9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="form-actions" style="--i:2">
+                    <button type="submit" class="btn btn--primary btn--glow">Login</button>
+                    <a class="btn btn--ghost" href="/" data-no-transition="true">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+
+{% if login_role == 'student' %}
+<script>
+    (function () {
+        var input = document.getElementById('register_number');
+        var err = document.getElementById('registerError');
+        if (!input || !err) return;
+
+        function isValid(v) {
+            return /^[A-Z0-9]{12}$/.test(v);
+        }
+
+        function sync() {
+            var v = (input.value || '').toUpperCase();
+            if (input.value !== v) input.value = v;
+
+            var show = v.length > 0 && !isValid(v);
+            err.style.display = show ? 'block' : 'none';
+            input.setCustomValidity(show ? 'Register number must be exactly 12 characters' : '');
+        }
+
+        sync();
+        input.addEventListener('input', sync);
+        input.addEventListener('blur', sync);
+    })();
+</script>
+{% endif %}
+
+</body>
+</html>

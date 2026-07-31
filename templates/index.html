@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Student Grievance Redressal System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="home">
+
+<header class="site-nav" role="banner">
+    <div class="site-nav-inner">
+        <div class="site-brand" aria-label="System">
+            <div class="site-brand-title">Student Grievance Redressal System</div>
+            <div class="site-brand-sub">RPA FIRST GRADE COLLEGE</div>
+        </div>
+        <div class="site-actions"></div>
+    </div>
+</header>
+
+<main class="container container--home" role="main">
+    <section class="panel home-shell" aria-label="Role selection">
+        <header class="home-header">
+            <div class="college-row">
+                <div class="college-logo" aria-hidden="true">
+                    <img
+                        src="{{ url_for('static', filename='college_logo.jpeg') }}"
+                        alt="RPA FIRST GRADE COLLEGE logo"
+                        loading="eager"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                    />
+                    <svg viewBox="0 0 64 64" width="46" height="46" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="College logo" style="display:none;">
+                        <path d="M32 6l22 10-22 10L10 16 32 6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M14 22v14c0 10 8 18 18 18s18-8 18-18V22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M10 16v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="college-text">
+                    <div class="college-name">RPA FIRST GRADE COLLEGE</div>
+                    <div class="college-meta">70th Cross Road, 5th Block, Rajajinagar, Bengaluru, Karnataka, 560010, India</div>
+                </div>
+            </div>
+
+            <h1 class="home-title">Student Grievance Redressal System</h1>
+            <p class="home-subtitle">Select your role to continue</p>
+        </header>
+
+        <div class="role-grid stagger" aria-label="Roles">
+            <a class="role-card" href="/student_login" style="--i:0">
+                <div class="role-icon" aria-hidden="true">🎓</div>
+                <div class="role-name">Student</div>
+                <div class="role-hint">Submit new complaints</div>
+            </a>
+
+            <a class="role-card" href="/admin_login" style="--i:1">
+                <div class="role-icon" aria-hidden="true">🛡️</div>
+                <div class="role-name">Admin</div>
+                <div class="role-hint">Assign & monitor status</div>
+            </a>
+
+            <a class="role-card" href="/department_login" style="--i:2">
+                <div class="role-icon" aria-hidden="true">🏫</div>
+                <div class="role-name">Department</div>
+                <div class="role-hint">Resolve academic issues</div>
+            </a>
+
+            <a class="role-card" href="/office_login" style="--i:3">
+                <div class="role-icon" aria-hidden="true">🏢</div>
+                <div class="role-name">Office Management</div>
+                <div class="role-hint">Resolve office issues</div>
+            </a>
+        </div>
+    </section>
+</main>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+
+</body>
+</html>

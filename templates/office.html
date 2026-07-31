@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Office Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="app">
+
+<header class="site-nav" role="banner">
+    <div class="site-nav-inner">
+        <div class="site-brand" aria-label="System">
+            <div class="site-brand-title">Student Grievance Redressal System</div>
+            <div class="site-brand-sub">Office Management</div>
+        </div>
+        <div class="site-actions">
+            <a href="/logout" class="btn btn--ghost">Logout</a>
+        </div>
+    </div>
+</header>
+
+<main class="container" role="main">
+    <section class="panel" aria-label="Office complaints">
+        <div class="panel-header">
+            <div class="panel-title">Assigned to Office Management</div>
+            <p class="panel-hint">Mark complaints as resolved when done.</p>
+        </div>
+
+        {% if not data or data|length == 0 %}
+            <div class="empty" style="padding: 18px;">
+                <div class="help" style="font-weight: 800;">No assigned complaints.</div>
+            </div>
+        {% else %}
+            <div class="cards-grid cards-grid--single" aria-label="Assigned complaints">
+                {% for c in data %}
+                    <article class="complaint-card {{ 'is-resolved' if c.status == 'Resolved' else '' }}" aria-label="Complaint {{ c.id }}">
+                        <div class="complaint-top">
+                            <div class="complaint-id">#{{ c.id }}</div>
+                            <span class="status-pill {{ c.status|replace(' ', '-') }}">{{ c.status }}</span>
+                        </div>
+
+                        <div class="complaint-text">{{ c.complaint_text }}</div>
+
+                        <div class="complaint-meta" aria-label="Complaint metadata">
+                            <span class="role-pill">Register No: {{ c.student_register_number }}</span>
+                            <span class="role-pill">Main: {{ c.main_category or '—' }}</span>
+                            <span class="role-pill">Sub: {{ c.sub_category or '—' }}</span>
+                        </div>
+
+                        {% if c.status != 'Resolved' %}
+                            <div class="response-card" aria-label="Latest update">
+                                <div class="response-card-title">Latest update</div>
+                                <div class="response-card-text">
+                                    {% if c.response_message and c.response_message|trim %}
+                                        {{ c.response_message }}
+                                    {% else %}
+                                        <span class="muted">No updates yet</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <form method="POST" action="/complaint_action/{{ c.id }}" class="mini-form" aria-label="Update complaint {{ c.id }}">
+                                <div class="field" style="margin:0;">
+                                    <label class="label" for="msg-{{ c.id }}" style="margin-bottom:6px;">Send update message</label>
+                                    <textarea id="msg-{{ c.id }}" name="response_message" rows="2" maxlength="500" placeholder="e.g., Your complaint is under process..." ></textarea>
+                                </div>
+
+                                <div class="actions">
+                                    <button type="submit" name="action" value="update" class="btn btn--ghost btn--info">Send Update</button>
+                                    <button type="submit" name="action" value="resolve" class="btn btn--ghost btn--success">Mark as Resolved</button>
+                                </div>
+                            </form>
+                        {% endif %}
+                    </article>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </section>
+</main>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+
+</body>
+</html>
