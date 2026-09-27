@@ -59,12 +59,13 @@ The system provides grievance-related information such as:
 - In-progress grievances
 - Resolved grievances
 
-🚀 How It Works
-Student registers and submits a grievance.
-Admin reviews the grievance.
-The grievance is routed to the appropriate Department or Office.
-The assigned team updates the grievance status.
-The student can track the progress and resolution.
+## 🚀 How It Works
+
+1. Student registers and submits a grievance.
+2. Admin reviews the grievance.
+3. The grievance is routed to the appropriate Department or Office.
+4. The assigned team updates the grievance status.
+5. The student can track the progress and resolution.
 
 🎓 Project Information
 Project: Student Grievance Redressal System
