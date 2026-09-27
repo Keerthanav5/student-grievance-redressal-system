@@ -50,12 +50,14 @@ View Grievance Status
 - Canteen
 - Other relevant student services
 
-📊 Dashboard
+## 📊 Dashboard
+
 The system provides grievance-related information such as:
-Total grievances
-Pending grievances
-In-progress grievances
-Resolved grievances
+
+- Total grievances
+- Pending grievances
+- In-progress grievances
+- Resolved grievances
 
 🚀 How It Works
 Student registers and submits a grievance.
