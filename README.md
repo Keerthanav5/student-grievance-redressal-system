@@ -32,11 +32,13 @@ Student
    ↓
 View Grievance Status
 
-🛠️ Tech Stack
-Category	Technologies
-Backend	Python, Flask
-Frontend	HTML, CSS
-Database	MySQL
+## 🛠️ Tech Stack
+
+| Category | Technologies |
+|---|---|
+| Backend | Python, Flask |
+| Frontend | HTML, CSS |
+| Database | MySQL |
 
 📌 Grievance Categories
 Academic
