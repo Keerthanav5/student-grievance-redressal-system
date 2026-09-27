@@ -40,14 +40,15 @@ View Grievance Status
 | Frontend | HTML, CSS |
 | Database | MySQL |
 
-📌 Grievance Categories
-Academic
-Administration
-Campus
-Fees
-Library
-Canteen
-Other relevant student services
+## 📌 Grievance Categories
+
+- Academic
+- Administration
+- Campus
+- Fees
+- Library
+- Canteen
+- Other relevant student services
 
 📊 Dashboard
 The system provides grievance-related information such as:
