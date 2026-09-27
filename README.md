@@ -67,8 +67,11 @@ The system provides grievance-related information such as:
 4. The assigned team updates the grievance status.
 5. The student can track the progress and resolution.
 
-🎓 Project Information
-Project: Student Grievance Redressal System
-Type: Internship Project
-Organization: Rooman Technologies
-Technology: Python, Flask, MySQL, HTML, CSS
+## 🎓 Project Information
+
+| Details | Information |
+|---|---|
+| Project | Student Grievance Redressal System |
+| Type | Internship Project |
+| Organization | Rooman Technologies |
+| Technologies | Python, Flask, MySQL, HTML, CSS |
